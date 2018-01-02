@@ -1,0 +1,120 @@
+原文地址：http://tutorials.crystalsolutions.eu/tutorial.html?td=others&tf=howtorun
+
+翻译注解 By ACIIE
+
+这里简单的介绍了一下CRYSTAL软件的组成，还有计算时所需要的输入和输出文件。
+
+CRYSTAL软件包含以下两个程序
+  crystal     计算波函数以及优化
+  properties  计算电子性质
+运行这两个程序需要如下两个脚本：
+  runcry17    计算波函数和性质（性质在输入文件存在的情况下也可以直接跟着波函数继续算）
+  runprop17   波函数分析和单电子性质
+这两个脚本是帮忙输出结果文件的，如果觉得繁琐也可以自己去改，具体的脚本文件在
+详细的可以计算的信息可以通过在linux下键入脚本的名字进行查看。
+ 
+CRYSTAL能够读取的文件扩展名如下：
+  .d12  波函数计算的输入文件（crystal程序读取）
+  .out  波函数计算的输出文件，这个后缀可以通过更改环境变量来自定义
+  .d3   电子性质计算的输入文件（properties 程序读取
+  .outp 电子性质计算的输出文件，后缀同样可以改
+以下是Crgra2006程序的输入和控制文件：
+  .ps   后脚本文件(postscript)- Crgra2006程序包输出文件
+  .maps maps06 控制文件
+  .band band06 控制文件
+  .doss doss06 控制文件
+
+脚本中的环境变量参考官方下载得到的软件包里的那个指南
+安装时会要求你单独source环境变量脚本文件cry2k9.cshrc(或者bash的cry2k9.bashrc，内容基本一致）
+下面是环境变量脚本中一些需要自行定义的变量：
+variable name         meaning                             value in the example
+CRY17_ROOT     CRYSTAL17 root directoy                     $HOME/CRYSTAL17
+CRY17_ARCH     ARCH string to identify the executable      Linux-ifort
+CRY17_SCRDIR   temporary directory for scratch files       $HOME
+CRY17_EXEDIR   binaries directory
+
+"crystal"和"properties"的默认路径是
+$CRY17_ROOT/bin/$CRY17_ARCH/std/
+scratch文件的路径是:
+$CRY17_SCRDIR/tmp$$
+
+剩下的是变量：
+variable name    meaning                                  default value
+OUTFILE          suffix of output files                   out                    
+VERSION          version of the executable                std
+CRY17_INP       "crystal" input files directory          $here
+CRY17_PROP      "properties" input files directory       $here
+CRY17_F9        wave function data directory             $here
+输出文件的文件夹不设定就默认是当前文件夹$here
+
+运行CRYSTAL17
+命令为：
+runcry17 inpfilename  [wf_filename]
+   脚本     输入文件      波函数文件
+你会注意到这里的输入文件名是不要求有后缀的，但是你在做输入文件的时候要标明后缀：
+你需要准备哪些输入文件？
+inpfilename.d12          HF/KS波函数计算输入文件。
+[wf_filename.f9](可选)	 之前计算得到的波函数文件，看"SCF"中的关键字GUESSP, RESTART 
+[inpfilename.d3](可选)	 如果有着个文件，properties程序会自动运行的。
+inpfilename.out	         输出文件
+
+接下来的这些文件会在计算结束后保存在当前文件夹下
+file               program      saved as                  data stored                 keyword
+fort.9             crystal   inpfilename.f9	              binary wave function      default, if SCF successful
+fort.98            crystal   inpfilename.f98              formatted w-f             default, if SCF successful
+GAUSS98.DAT        crystal   inpfilename.gjf              input for Gaussian98      GAUSS98
+fort.33            crystal   inpfilename.xyz              atoms coordinates         COORPRT
+FINDSYM.DAT        crystal   inpfilename.FINDSYM          input for findsym         FINDSYM
+fort.34            crystal   inpfilename.gui              GUI-crystal structure     EXTPRT
+HESSOPT.DAT        crystal   inpfilename.hessopt          Hessian                   OPTGEOM
+OPTINFO.DAT        crystal   inpfilename.optinfo          info for opt restart      OPTGEOM
+FREQINFO.DAT       crystal   inpfilename.freqinfo         info for freq restart     FREQCALC
+HESSFREQ.DAT       crystal   inpfilename.hessfreq         Hessian                   FREQCALC
+REFLECTANCE.DAT    crystal   inpfilename.reflectance      reflectance data to plot  FREQCALC/REFLECTANCE
+EOSINFO.DAT        crystal   inpfilename.eosinfo          Equation of State         EOS
+ELASINFO.DAT       crystal   inpfilename.elasinfo         elastic constants         ELASTCON
+
+运行PROP17
+一般给出的例子都是从二进制的波函数文件中(f9)来读取信息进行计算，但从f98读也是可以的，关键字RDFMWF
+命令为：
+runprop17   inpfilename  [wf_filename]
+你需要准备哪些输入文件？
+inpfilename.d3	                properties input file
+inpfilename.f9 (default)	      crystal SCF wave function data
+[wf_filename.f9] (optional)	    crystal SCF wave function data
+inpfilename_wf_filename.outp	  printed output file
+如此眼熟我就不多解释了。
+
+在SCF计算最后会把波函数信息写入fort.9中，并且通过runcry17脚本保存成inpfilename.f9格式的文件
+properties会保存如下文件：
+file                  saved as                   data stored                                 keyword
+fort.98               inpfilename.f98            formatted wave function                     FMWF
+fort.33               inpfilename.xyz            atoms coordinates - xyz format              COORPRT
+fort.25               inpfilename.f25            data for visualization                      BAND,DOSS,ECHG,POTM
+fort.31               inpfilename_dat.prop3d     3D charge (spin) density/potential          ECH3/POT3
+fort.32               inpfilename_dat.info3d     information on 3D grid                      ECH3/POT3 or GRID3D
+fort.34               inpfilename.gui            GUI - crystal structure                     EXTPRT
+SYMMINFO.DAT          inpfilename.sym            symmetry information                        SYMMINFO
+BAND.DAT              inpfilename_dat.BAND       band structure                              BAND
+DOSS.DAT              inpfilename_dat.DOSS       density of states                           DOSS
+RHOLINE.DAT           inpfilename_dat.RHOLINE    electron density profile                    ECHG
+POTC.DAT              inpfilename_dat.POTC       exact electrostatic potential               POTC (FIELD in geometry input)
+EMDL.DAT              inpfilename_dat.EMDL       Electron Momentum distribution              EMDL
+BIDIDI.DAT            inpfilename.BDIDI          B(r)                                        BIDIERD
+GRED.DAT              inpfilename.GRED           BS, geom,direct lattice reducible data      CRYAPI_OUT
+KRED.DAT              inpfilename.KRED           eigenvectors in full BZ                     CRYAPI_OUT
+最后两个文件 GRED.DAT, KRED.DAT 可以被程序 cryapi_inp.f读取。
+
+可视化输出结果
+这个部分是官网默认提供的，后期我会根据自己使用的再给出详细的说明。
+1.几何结构
+晶体原胞的原子坐标储存在fort33中，并保存为xyz格式的inpfilename.xyz.
+软件MOLDEN可以读取坐标，但是不识别平移对称性（translational symmetry），为了获得更好的可视化结果，对于晶体结构的大片段推荐使用关键字SUPERCEL
+软件MOLDRAW(仅支持MS-Windows)支持显示输出文件，允许可视化晶胞。并且有一系列的工具支持分析晶体结构。指路http://tutorials.crystalsolutions.eu/tutorial.html?td=MOLDRAW_tuto&tf=index
+其他软件还有DLV和XcryDen。
+2.性质
+性质保存在fort.25格式文件中，文件夹中对应等价保存的是inpfilename.f25
+网页CRYSPLOT。CRYSTAL的一个在线工具库，可以可视化价带结构，态密度，2Dmaps，频率光谱等等等等
+软件Crgra2006。上面提到过，可以输出band06,doss06和maps06文件，都是可以通过该软件进行读取和可视化的。
+
+
