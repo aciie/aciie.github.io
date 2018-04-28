@@ -1,0 +1,8 @@
+from: http://theory.cm.utexas.edu/forum/viewtopic.php?f=2&t=644
+Q:
+I have calculated the vibrational frequencies of propanoic acid (CH3CH2COOH) adsorbed onto Pd(111). Since the molecule has 11 atoms, I got 33 modes.
+There are 2 imaginary frequencies, could I just omit these 2 imaginary ones?
+A: If the molecule is really adsorbed to the surface there should not be any negative modes. If it is weakly physisorbed, you can ignore the lowest 6 modes - 3 rotation and 3 translation.
+Make sure that the modes are converged with respect to the accuracy of the forces (ediff) and the displacement size. Also, include some surface Pt atoms if the molecule is chemisorbed.
+
+
