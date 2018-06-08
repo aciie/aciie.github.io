@@ -9,15 +9,17 @@ numpy可以直接从这个网站下载https://pypi.org/project/numpy/#files
 注意倒数第二列的Python version，要和自己的python版本一致。我这里下载的是numpy-1.14.4-cp36-none-win_amd64.whl
 
 ![](https://i.imgur.com/BZ5VG8k.png)
-
+ 
 文件位置：
 下载好后将文件放到python安装目录下的scripts文件夹中。如果python安装正确的话这个文件夹中应该还有pip和easy_install.
 
-
+ 
 加入系统变量：
 然后将上述文件夹路径加入到系统变量中。
 方法如下：把Scripts这个目录拷贝下来,然后“右击计算机-属性-高级-环境变量-系统变量-path-编辑它”将刚才的路径粘贴进去。
-
+ 
+开始安装：
+ 
 搞定这些之后，因为我比较习惯用Windows Powershell, 所以打开Windows Powershell（x86）
 
 首先通过命令cd进入到python的scripts目录：
