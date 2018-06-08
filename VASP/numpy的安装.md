@@ -1,10 +1,12 @@
 numpy的下载与安装教程(windows系统)
 
-感谢https://blog.csdn.net/llxlqy/article/details/76967830的教程。其实已经写的非常的详细了。我只是重新记录一下numpy的安装过程，帮助自己记忆。
+感谢https://blog.csdn.net/llxlqy/article/details/76967830
+的教程。其实已经写的非常的详细了。我只是重新记录一下numpy的安装过程，帮助自己记忆。
 
 一开始要安装numpy是因为涉及到矩阵的计算。
 
-numpy可以直接从这个网站下载https://pypi.org/project/numpy/#files，注意倒数第二列的Python version，要和自己的python版本一致。我这里下载的是numpy-1.14.4-cp36-none-win_amd64.whl
+numpy可以直接从这个网站下载https://pypi.org/project/numpy/#files
+注意倒数第二列的Python version，要和自己的python版本一致。我这里下载的是numpy-1.14.4-cp36-none-win_amd64.whl
 
 ![](https://i.imgur.com/BZ5VG8k.png)
 
